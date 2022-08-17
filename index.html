@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav id="bar">
+        <div id="menu">    
+            <img src="https://thumbs.dreamstime.com/b/  lets-shopping-logo-design-template-shop-icon-135610500.jpg" alt="icon">
+        
+            <a href="index.html">Home</a>
+            <a href="mens.html">Mens</a>
+            <a href="womens.html">Womens</a>
+        </div>
+        <a href="cart.html">
+            <div id="cart">
+            <img src="https://cdn.icon-icons.com/icons2/1369/PNG/512/-shopping-cart_90604.png" alt="cart">
+            <h5 id="cartCount">0</h5>
+            </div>
+        </a>    
+    </nav>
+    <h2>HOME</h2>
+    
+</body>
+
+<script>
+    var cartCount=document.getElementById("cartCount");
+    cartCount.innerText=localStorage.getItem("cartofCount")||0;
+    setTimeout(function(){
+        window.open("./mens.html", "_self");
+    },1200);
+</script>
+
+</html>

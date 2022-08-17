@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav id="bar">
+        <div id="menu">    
+            <img src="https://thumbs.dreamstime.com/b/  lets-shopping-logo-design-template-shop-icon-135610500.jpg" alt="icon">
+        
+            <a href="index.html">Home</a>
+            <a href="mens.html">Mens</a>
+            <a href="womens.html">Womens</a>
+        </div>
+        <a href="cart.html">
+            <div id="cart">
+            <img src="https://cdn.icon-icons.com/icons2/1369/PNG/512/-shopping-cart_90604.png" alt="cart">
+            <h5 id="cartCount">0</h5>
+            </div>
+        </a>    
+    </nav>
+
+
+    <div id="cartBox">
+        
+        <div id="cartItems">
+            <!-- <p>Ayush</p> -->
+            <!-- <div>
+                <img src= "https://content.shop4reebok.com/static/Product-EX4296/reebok_EX4296_1.jpg.plp" alt="product">
+                <div>
+                    <h3>MEN'S REEBOK RUNNING ROADMAP SHOES</h3>
+                    <div id="cartOption">
+                        <div><p>&#8377; 699</p></div>
+                        <div id="IncDec">
+                            <button>-</button>
+                            <span>0</span>
+                            <button>+</button>
+                        </div>
+                        <button id="remove">Remove From Cart</button>
+                    </div>
+                </div>
+            </div>   -->
+            
+        </div>
+        
+        <div id="paymentSection">
+            <!-- <p>Kumar</p> -->
+            <div>
+                <h4>Total Payement</h4>
+                <h4 id="totalAmount">0</h4>
+            </div>
+            <div>
+                <h4>Apply PromoCode</h4>
+                <input type="text" id="promocode">
+                <button onclick="Promoapplied()">Apply Promo</button>
+            </div>
+            <button onclick="MakePayment()">Make Payment</button>
+
+        </div>
+    </div>
+    
+</body>
+</html>
+
+<script>
+     var cartCount=document.getElementById("cartCount");
+     cartCount.innerText=localStorage.getItem("cartofCount")||0;
+</script>
+
+
+<script>
+    
+    var cartItems=JSON.parse(localStorage.getItem("CartItems"))||[];
+
+    displayCartItems(cartItems);
+    
+    function displayCartItems(Items){
+        document.getElementById("cartItems").innerText="";
+        Items.map(function(elm,ind){
+            var input1=`
+                <img src= "${elm.image_url}" alt="product">
+                <div>
+                    <h3>${elm.name}</h3>
+                    <div id="cartOption">
+                        <div><p>&#8377; ${elm.price}</p></div>
+                        <div id="IncDec">
+                            <button onclick="decrease()">-</button>
+                            <span>1</span>
+                            <button onclick="increase()">+</button>
+                        </div>
+                        <button id="remove" onClick="removeItem(${ind})">Remove From Cart</button>
+                    </div>
+                </div>`
+
+                var div=document.createElement("div");
+                div.innerHTML=input1;
+                document.querySelector("#cartItems").append(div);
+        })
+    }
+
+
+    function removeItem(ind){
+        cartItems.splice(ind,1);
+
+        localStorage.setItem("CartItems",JSON.stringify(cartItems));
+
+        localStorage.setItem("cartofCount",cartItems.length);
+
+        cartCount.innerText=localStorage.getItem("cartofCount");
+        cartCount.innerText=cartItems.length;
+
+        displayCartItems(cartItems);
+
+
+        //Updating amount in cart Total Amount
+
+        var Total=cartItems.reduce(function(total,item){
+        return total + Number(item.price);
+         },0)
+
+        localStorage.setItem("TotalAmount",Total);
+
+        document.getElementById("totalAmount").innerText=Total;
+    }
+      
+    function increase(){
+
+
+
+    }
+
+    function decrease(){
+
+    }
+
+
+</script>
+
+
+<!-- script for total amount -->
+
+<Script>
+    var cartItems=JSON.parse(localStorage.getItem("CartItems"))||[];
+
+    
+    var Total=cartItems.reduce(function(total,item){
+        return total + Number(item.price);
+         },0)
+        
+        localStorage.setItem("TotalAmount",Total);
+
+        document.getElementById("totalAmount").innerText=Total;
+        document.getElementById("totalAmount").innerText=localStorage.getItem("TotalAmount")||0;
+
+
+</Script>
+
+<script>
+    function Promoapplied(){
+        var promocode=document.getElementById("promocode").value;
+        if(promocode=="masai30"){
+            var totalamount=localStorage.getItem("TotalAmount");
+
+            totalamount=Math.round(totalamount*0.7);
+
+            console.log(totalamount);
+            document.getElementById("totalAmount").innerText=totalamount;
+            alert("Promo Code Applied successfully")
+
+        }else{
+            alert("Invalid Promo Code");
+        }
+    }
+
+    function MakePayment(){
+        finalAmount =document.getElementById("totalAmount").innerText;
+        localStorage.setItem("TotalAmount",finalAmount);
+        window.open("Paymentpage/payment.html","_self");
+        
+    }
+
+
+</script>
+
+
+<!-- 
+
+Script for display and remove First approach
+
+<script>
+    
+    var cartItems=JSON.parse(localStorage.getItem("CartItems"));
+
+    displayCartItems(cartItems);
+    
+    function displayCartItems(Items){
+        document.getElementById("cartItems").innerText="";
+        Items.map(function(elm){
+            var input1=`
+                <img src= "${elm.image_url}" alt="product">
+                <div>
+                    <h3>${elm.name}</h3>
+                    <div id="cartOption">
+                        <div><p>&#8377; ${elm.price}</p></div>
+                        <div id="IncDec">
+                            <button onclick="decrease()">-</button>
+                            <span>1</span>
+                            <button onclick="increase()">+</button>
+                        </div>
+                        <button id="remove" onClick="removeItem(${elm.id})">Remove From Cart</button>
+                    </div>
+                </div>`
+
+                var div=document.createElement("div");
+                div.innerHTML=input1;
+                document.querySelector("#cartItems").append(div);
+        })
+    }
+
+
+    function removeItem(id){
+        var RemainingItem=cartItems.filter(function(product){
+            return product.id!==id;
+        })
+        localStorage.setItem("CartItems",JSON.stringify(RemainingItem||[]));
+
+        localStorage.setItem("cartofCount",RemainingItem.length)
+        var cartCount=document.getElementById("cartCount");
+
+        cartCount.innerText=localStorage.getItem("cartofCount")||0;
+
+
+        displayCartItems(RemainingItem);
+        
+    }
+
+
+
+   
+
+
+
+
+</script>
+ -->
